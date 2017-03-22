@@ -57,7 +57,9 @@
 (defn tnsnk [snk dir]
  (assoc snk :d dir))
 (defn ouch? [{b :b}]
- (contains? (set (rest b)) (first b)))
+ (or (contains? (set (rest b)) (first b))
+  (let [[x y] (first b)]
+   (or (> x w) (< x 0) (> y h) (< y 0)))))
 (defn obtn? [[a b] [c d]]
  (or (and (= a c) (= b (- d))) (and (= b d) (= a (- c)))))
 (def rsnk (atom (csnk)))
