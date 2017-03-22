@@ -72,7 +72,7 @@
 (defn- upst! []
  (if (contains? @raps (first (:b @rsnk)))
   (do
-   (swap! raps conj (first (:b @rsnk)))
+   (swap! raps disj (first (:b @rsnk)))
    (icsnk! rsnk))
   (mvsnk! rsnk))
  (if (zero? @ratiks)
