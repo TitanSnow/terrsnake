@@ -125,4 +125,5 @@
              (.setContentPane panel)
              (.pack)
              (.setVisible true)
+             (.setResizable false)
              (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE))]))
