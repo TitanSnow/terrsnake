@@ -26,7 +26,7 @@
  (:import (java.awt Color Dimension)
           (javax.swing JPanel JFrame Timer JOptionPane)
           (java.awt.event ActionListener KeyListener))
- (:use import-static))
+ (:use stuart.import-static))
 (import-static java.awt.event.KeyEvent VK_H VK_J VK_K VK_L)
 (def w 20)
 (def h 20)
@@ -42,34 +42,34 @@
   VK_L [1 0]})
 (def ratiks (atom 5))
 (def raps (atom #{}))
-(defn addp [& pts]
+(defn- addp [& pts]
  (vec (apply map + pts)))
-(defn p2r [pt]
+(defn- p2r [pt]
  [(pt 0) (pt 1) 1 1])
-(defn csnk []
+(defn- csnk []
  {:b (reverse (for [x (range 6)] [x (quot h 2)]))
   :d [1 0]
   :t :snk})
-(defn icsnk [snk]
+(defn- icsnk [snk]
  (assoc snk :b (cons (addp (first (:b snk)) (:d snk)) (:b snk))))
-(defn mvsnk [snk]
+(defn- mvsnk [snk]
  (assoc (assoc snk :l (last (:b snk))) :b (drop-last (:b (icsnk snk)))))
-(defn tnsnk [snk dir]
+(defn- tnsnk [snk dir]
  (assoc snk :d dir))
-(defn ouch? [{b :b}]
+(defn- ouch? [{b :b}]
  (or (contains? (set (rest b)) (first b))
   (let [[x y] (first b)]
    (or (> x w) (< x 0) (> y h) (< y 0)))))
-(defn obtn? [[a b] [c d]]
+(defn- obtn? [[a b] [c d]]
  (or (and (= a c) (= b (- d))) (and (= b d) (= a (- c)))))
 (def rsnk (atom (csnk)))
-(defn icsnk! [rsnk]
+(defn- icsnk! [rsnk]
  (swap! rsnk icsnk))
-(defn mvsnk! [rsnk]
+(defn- mvsnk! [rsnk]
  (swap! rsnk mvsnk))
-(defn tnsnk! [rsnk dir]
+(defn- tnsnk! [rsnk dir]
  (swap! rsnk tnsnk dir))
-(defn upst! []
+(defn- upst! []
  (if (contains? @raps (first (:b @rsnk)))
   (do
    (swap! raps conj (first (:b @rsnk)))
@@ -80,26 +80,26 @@
    (reset! ratiks 5)
    (swap! raps conj (:l @rsnk)))
   (swap! ratiks dec)))
-(defn uptn! [nd]
+(defn- uptn! [nd]
  (when (and nd (not (obtn? (:d @rsnk) nd))) (tnsnk! rsnk nd)))
-(defn resetgame! []
+(defn- resetgame! []
  (def rsnk (atom (csnk)))
  (def raps (atom #{}))
  (reset! ratiks 5))
-(defn pp [g pt c]
+(defn- pp [g pt c]
  (let [[x y w h] (p2r pt)]
   (.setColor g c)
   (.fillRect g x y w h)))
-(defn paint [g {b :b}]
+(defn- paint [g {b :b}]
  (doseq [pt b] (pp g pt snkc)))
-(defn paintaps [g aps]
+(defn- paintaps [g aps]
  (doseq [pt aps] (pp g pt apsc)))
-(defn clearpaint [g snk]
+(defn- clearpaint [g snk]
  (.setColor g blkc)
  (if (not (contains? snk :l)) (.fillRect g 0 0 (inc w) (inc h))
   (let [[x y w h] (p2r (:l snk))]
    (.fillRect g x y w h))))
-(let [frame (JFrame. "SNAKE")
+(defn game [] (let [frame (JFrame. "SNAKE")
       panel (doto (proxy [JPanel ActionListener KeyListener] []
                    (paintComponent [g]
                      (.scale g scl scl)
@@ -125,4 +125,4 @@
              (.setContentPane panel)
              (.pack)
              (.setVisible true)
-             (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE))])
+             (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE))]))
