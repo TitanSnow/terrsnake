@@ -96,9 +96,7 @@
  (doseq [pt aps] (pp g pt apsc)))
 (defn- clearpaint [g snk]
  (.setColor g blkc)
- (if (not (contains? snk :l)) (.fillRect g 0 0 (inc w) (inc h))
-  (let [[x y w h] (p2r (:l snk))]
-   (.fillRect g x y w h))))
+ (.fillRect g 0 0 (inc w) (inc h)))
 (defn game [] (let [frame (JFrame. "SNAKE")
       panel (doto (proxy [JPanel ActionListener KeyListener] []
                    (paintComponent [g]
