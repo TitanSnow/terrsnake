@@ -31,7 +31,7 @@
 (def ^:private w 20)
 (def ^:private h 20)
 (def ^:private scl 20)
-(def ^:private tik 300)
+(def ^:private tik 100)
 (def ^:private snkc (Color. 0 0 0))
 (def ^:private blkc (Color. 255 255 255))
 (def ^:private apsc (Color. 255 0 0))
