@@ -28,20 +28,20 @@
           (java.awt.event ActionListener KeyListener))
  (:use stuart.import-static))
 (import-static java.awt.event.KeyEvent VK_H VK_J VK_K VK_L)
-(def w 20)
-(def h 20)
-(def scl 20)
-(def tik 300)
-(def snkc (Color. 0 0 0))
-(def blkc (Color. 255 255 255))
-(def apsc (Color. 255 0 0))
-(def k2d
+(def ^:private w 20)
+(def ^:private h 20)
+(def ^:private scl 20)
+(def ^:private tik 300)
+(def ^:private snkc (Color. 0 0 0))
+(def ^:private blkc (Color. 255 255 255))
+(def ^:private apsc (Color. 255 0 0))
+(def ^:private k2d
  {VK_H [-1 0]
   VK_J [0 1]
   VK_K [0 -1]
   VK_L [1 0]})
-(def ratiks (atom 5))
-(def raps (atom #{}))
+(def ^:private ratiks (atom 5))
+(def ^:private raps (atom #{}))
 (defn- addp [& pts]
  (vec (apply map + pts)))
 (defn- p2r [pt]
@@ -62,7 +62,7 @@
    (or (> x w) (< x 0) (> y h) (< y 0)))))
 (defn- obtn? [[a b] [c d]]
  (or (and (= a c) (= b (- d))) (and (= b d) (= a (- c)))))
-(def rsnk (atom (csnk)))
+(def ^:private rsnk (atom (csnk)))
 (defn- icsnk! [rsnk]
  (swap! rsnk icsnk))
 (defn- mvsnk! [rsnk]
@@ -83,8 +83,8 @@
 (defn- uptn! [nd]
  (when (and nd (not (obtn? (:d @rsnk) nd))) (tnsnk! rsnk nd)))
 (defn- resetgame! []
- (def rsnk (atom (csnk)))
- (def raps (atom #{}))
+ (def ^:private rsnk (atom (csnk)))
+ (def ^:private raps (atom #{}))
  (reset! ratiks 5))
 (defn- pp [g pt c]
  (let [[x y w h] (p2r pt)]
